@@ -366,14 +366,13 @@ def func_prep(base_dir, data_path, subject, atlas_name):
     drop_first_slices_image = drop_first_slices(drop_first_slices_dir, func_image)
     
     # Motion correction
-    motion_correction_image = motion_correction(drop_first_slices_image, slice_timming_correction_image)
+    motion_correction_image = motion_correction(motion_correction_dir, drop_first_slices_image)
 
     # Slice timing correction
-    slice_timming_correction_image = slice_timing_correction(motion_correction_image, drop_first_slices_image)
-    
+    slice_timming_correction_image = slice_timing_correction(slice_timing_correction_dir, motion_correction_image)
     
     # Brain extraction
-    brain_extraction_image = brain_extraction(brain_extraction_dir, motion_correction_image)
+    brain_extraction_image = brain_extraction(brain_extraction_dir, slice_timming_correction_image)
 
     # Intensity normalization
     intensity_normalization_image = intensity_normalization(intensity_normalization_dir, brain_extraction_image)
@@ -396,20 +395,20 @@ def func_prep(base_dir, data_path, subject, atlas_name):
 # Main Pipeline Function
 def main(base_dir, output_dir, data_path, subject, atlas_name):
     # Create working folder
-    create_directory(base_dir, "Creating preprocessing/ folder...")
+    # create_directory(base_dir, "Creating preprocessing/ folder...")
     
     # Create output folder
-    create_directory(output_dir, "Creating output/ folder...")
+    # create_directory(output_dir, "Creating output/ folder...")
     
     # Create output subfolders
-    create_directory(os.path.join(output_dir, "rois_cc200"), "Creating output/rois_cc200/ folder...")
-    create_directory(os.path.join(output_dir, "rois_aal"), "Creating output/rois_aal/ folder...")
-    create_directory(os.path.join(output_dir, "rois_ho"), "Creating output/rois_ho/ folder...")
+    # create_directory(os.path.join(output_dir, "rois_cc200"), "Creating output/rois_cc200/ folder...")
+    # create_directory(os.path.join(output_dir, "rois_aal"), "Creating output/rois_aal/ folder...")
+    # create_directory(os.path.join(output_dir, "rois_ho"), "Creating output/rois_ho/ folder...")
     
     # Create subject folder
-    create_directory(os.path.join(base_dir, subject), f"Creating {subject}/ folder...")
+    # create_directory(os.path.join(base_dir, subject), f"Creating {subject}/ folder...")
    
-    anat_prep(base_dir, data_path, subject)
+    # anat_prep(base_dir, data_path, subject)
     func_prep(base_dir, data_path, subject, atlas_name) 
 
 # Example Usage
@@ -418,6 +417,6 @@ if __name__ == "__main__":
     output_dir = 'output'
     data_path = 'data'
     subject = 'Caltech_51461'
-    atlas_name = 'cc200'
+    atlas_name = 'aal'
 
     main(base_dir, output_dir, data_path, subject, atlas_name)
